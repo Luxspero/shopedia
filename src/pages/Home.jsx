@@ -62,7 +62,7 @@ function Home() {
 
   return (
     <div className="container mx-auto p-4 mt-14">
-      <h1 className="text-2xl font-bold mb-4">Latest Trailers</h1>
+      <h1 className="text-2xl font-bold mb-4">For You</h1>
 
       {/* Swiper Section */}
       <Swiper
