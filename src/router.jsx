@@ -2,6 +2,7 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import MainLayout from "./layout/MainLayout";
 import Details from "./pages/Details";
+import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 
@@ -17,6 +18,16 @@ const router = createBrowserRouter([
       {
         path: "details/:id",
         element: <Details />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
+        loader: () => {
+          if (!localStorage.getItem("token")) {
+            return redirect("/login");
+          }
+          return null;
+        },
       },
     ],
   },
