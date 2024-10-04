@@ -16,11 +16,11 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "details/:id",
+        path: "/details/:id",
         element: <Details />,
       },
       {
-        path: "cart",
+        path: "/cart",
         element: <Cart />,
         loader: () => {
           if (!localStorage.getItem("token")) {
