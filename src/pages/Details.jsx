@@ -6,6 +6,7 @@ import {
 } from "../features/products/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "../features/products/cartSlice";
+import ProductCard from "../components/ProductCard";
 
 const Details = () => {
   const { id } = useParams();
@@ -37,6 +38,13 @@ const Details = () => {
     // Fetch the product by its id
     dispatch(fetchProduct(id));
   }, [id, dispatch]);
+
+  // Fetch similar products only when dataDetails is available
+  useEffect(() => {
+    if (dataDetails?.category) {
+      dispatch(fetchProductsByCategory(dataDetails.category));
+    }
+  }, [dataDetails, dispatch]);
 
   if (isLoading) {
     return (
@@ -100,31 +108,9 @@ const Details = () => {
           {/* Similar Products */}
           <div className="mt-12">
             <h2 className="text-2xl font-semibold mb-6">Similar Products</h2>
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {dataByCategory?.map((product) => (
-                <div
-                  key={product.id}
-                  className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
-                >
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-48 object-cover mb-4 rounded"
-                  />
-                  <h2 className="text-lg font-semibold">{product.title}</h2>
-                  <p className="text-gray-500 text-sm mt-2 mb-4">
-                    {product.category}
-                  </p>
-                  <p className="font-bold text-xl text-blue-600">
-                    ${product.price}
-                  </p>
-                  <Link
-                    to={`/details/${product.id}`}
-                    className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
-                  >
-                    View Details
-                  </Link>
-                </div>
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
           </div>
