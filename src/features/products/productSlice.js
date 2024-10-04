@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { data } from "autoprefixer";
 
 export const productSlice = createSlice({
   name: "product",
