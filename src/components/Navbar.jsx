@@ -1,5 +1,5 @@
+import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { CartOutline } from "react-ionicons";
 
 const Navbar = () => {
   const token = localStorage.getItem("token");
@@ -19,8 +19,12 @@ const Navbar = () => {
         </Link>
         {token ? (
           <>
-            <Link to="/chart" className="hover:text-gray-400 flex items-center">
-              <CartOutline color={"#ffffff"} />
+            <Link
+              to="/cart"
+              className="hover:text-gray-400 flex items-center space-x-1"
+            >
+              {/* Ikon Cart */}
+              <AiOutlineShoppingCart size={24} />
               <span>Cart</span>
             </Link>
             <Link to="/logout" className="hover:text-gray-400">
