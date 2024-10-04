@@ -66,7 +66,6 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            <span>donero</span>
           </div>
 
           <div className="mb-6">
@@ -85,7 +84,6 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <span>ewedon</span>
           </div>
 
           <div className="flex items-center justify-between">
