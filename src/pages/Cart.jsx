@@ -1,6 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeItemFromCart } from "../features/products/cartSlice";
+import {
+  removeItemFromCart,
+  updateItemQuantity,
+  setCartFromLocalStorage,
+} from "../features/products/cartSlice";
 import { TbTrashX } from "react-icons/tb";
+import { useEffect } from "react";
 
 const Cart = () => {
   const { cartItems, totalQuantity, totalPrice } = useSelector(
@@ -9,12 +14,35 @@ const Cart = () => {
 
   const dispatch = useDispatch();
 
+  // Load cart from localStorage on first render
+  useEffect(() => {
+    const cartData = localStorage.getItem("cart");
+    if (cartData) {
+      const savedCart = JSON.parse(cartData);
+      if (savedCart.cartItems.length > 0) {
+        dispatch(setCartFromLocalStorage(savedCart));
+      }
+    }
+  }, [dispatch]);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    const cartData = { cartItems, totalQuantity, totalPrice };
+    localStorage.setItem("cart", JSON.stringify(cartData));
+  }, [cartItems, totalQuantity, totalPrice]);
+
   const handleRemoveItem = (itemId) => {
     dispatch(removeItemFromCart(itemId));
   };
 
+  const handleUpdateQuantity = (itemId, newQuantity) => {
+    if (newQuantity > 0) {
+      dispatch(updateItemQuantity({ id: itemId, quantity: newQuantity }));
+    }
+  };
+
   return (
-    <div className="container mx-auto mt-10 p-4">
+    <div className="container mx-auto mt-10 p-20">
       <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
 
       {/* Cart Items List */}
@@ -41,8 +69,27 @@ const Cart = () => {
                 </div>
                 <div className="flex items-center space-x-4">
                   <p className="font-semibold text-lg">
-                    ${item.price * item.quantity}
+                    ${(item.price * item.quantity).toFixed(2)}
                   </p>
+                  <div className="flex items-center">
+                    <button
+                      onClick={() =>
+                        handleUpdateQuantity(item.id, item.quantity - 1)
+                      }
+                      className="bg-gray-300 text-black py-1 px-2 rounded hover:bg-gray-400 transition-colors duration-300"
+                    >
+                      -
+                    </button>
+                    <span className="mx-2">{item.quantity}</span>
+                    <button
+                      onClick={() =>
+                        handleUpdateQuantity(item.id, item.quantity + 1)
+                      }
+                      className="bg-gray-300 text-black py-1 px-2 rounded hover:bg-gray-400 transition-colors duration-300"
+                    >
+                      +
+                    </button>
+                  </div>
                   <button
                     onClick={() => handleRemoveItem(item.id)}
                     className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600 transition-colors duration-300"

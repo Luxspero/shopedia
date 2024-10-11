@@ -87,7 +87,7 @@ function Home() {
               <img
                 src={product.image}
                 alt={product.title}
-                className="absolute inset h-full object-cover opacity-30"
+                className="absolute h-full object-cover opacity-30"
               />
               <div className="absolute bottom-0 left-0 p-4 text-white">
                 <h2 className="text-xl text-blue-500 font-semibold">

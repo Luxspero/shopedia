@@ -37,9 +37,31 @@ const cartSlice = createSlice({
         state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
       }
     },
+    updateItemQuantity(state, action) {
+      const { id, quantity } = action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === id);
+
+      if (existingItem && quantity > 0) {
+        state.totalQuantity += quantity - existingItem.quantity;
+        state.totalPrice +=
+          (quantity - existingItem.quantity) * existingItem.price;
+        existingItem.quantity = quantity;
+      }
+    },
+    setCartFromLocalStorage(state, action) {
+      const { cartItems, totalQuantity, totalPrice } = action.payload;
+      state.cartItems = cartItems;
+      state.totalQuantity = totalQuantity;
+      state.totalPrice = totalPrice;
+    },
   },
 });
 
-export const { addItemToCart, removeItemFromCart } = cartSlice.actions;
+export const {
+  addItemToCart,
+  removeItemFromCart,
+  updateItemQuantity,
+  setCartFromLocalStorage,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
